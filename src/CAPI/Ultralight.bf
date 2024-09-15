@@ -816,13 +816,13 @@ namespace Ultralight.CAPI
 		public static extern void ulDestroyString(ULString str);
 		
 		///
-		/// Get internal UTF-16 buffer data.
+		/// Get native UTF-8 buffer data (always null-terminated). 
 		///
 		[CLink]
-		public static extern ULChar16* ulStringGetData(ULString str);
+		public static extern char8* ulStringGetData(ULString str);
 		
 		///
-		/// Get length in UTF-16 characters.
+		/// Get length (in bytes) of the UTF-8 buffer data, not including null terminator.
 		///
 		[CLink]
 		public static extern uint32 ulStringGetLength(ULString str);
