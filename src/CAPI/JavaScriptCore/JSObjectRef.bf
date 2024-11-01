@@ -346,65 +346,62 @@ namespace Ultralight.CAPI
 		Standard JavaScript practice calls for storing function objects in prototypes, so they can be shared. The default JSClass created by JSClassCreate follows this idiom, instantiating objects with a shared, automatically generating prototype containing the class's function objects. The kJSClassAttributeNoAutomaticPrototype attribute specifies that a JSClass should not automatically generate such a prototype. The resulting JSClass instantiates objects with the default object prototype, and gives each instance object its own copy of the class's function objects.
 		A NULL callback specifies that the default object callback should substitute, except in the case of hasProperty, where it specifies that getProperty should substitute.
 		*/
-		
 		[CRepr]
-		public struct JSClassDefinitionVersion0
-		{
-			public int version;
-			public JSClassAttributes attributes;
-			public char8* className;
-			public JSClassRef parentClass;
-		
-			/* version 0 */
-			public readonly JSStaticValue* staticValues;
-			public readonly JSStaticFunction* staticFunctions;
-			public JSObjectInitializeCallback initialize;
-			public JSObjectFinalizeCallback finalize;
-			public JSObjectHasPropertyCallback hasProperty;
-			public JSObjectGetPropertyCallback getProperty;
-			public JSObjectSetPropertyCallback setProperty;
-			public JSObjectDeletePropertyCallback deleteProperty;
-			public JSObjectGetPropertyNamesCallback getPropertyNames;
-			public JSObjectCallAsFunctionCallback callAsFunction;
-			public JSObjectCallAsConstructorCallback callAsConstructor;
-			public JSObjectHasInstanceCallback hasInstance;
-			public JSObjectConvertToTypeCallback convertToType;
-		
-			//public void* privateData;/* version 1000 only */
-		};
-		
-		[CRepr]
-		public struct JSClassDefinitionVersion1000
-		{
-			public int version;
-			public JSClassAttributes attributes;
-			public char8* className;
-			public JSClassRef parentClass;
-		
-			/* version 1000 */
-			public readonly JSStaticValueEx* staticValuesEx;
-			public readonly JSStaticFunctionEx* staticFunctionsEx;
-			public JSObjectInitializeCallbackEx initializeEx;
-			public JSObjectFinalizeCallbackEx finalizeEx;
-			public JSObjectHasPropertyCallbackEx hasPropertyEx;
-			public JSObjectGetPropertyCallbackEx getPropertyEx;
-			public JSObjectSetPropertyCallbackEx setPropertyEx;
-			public JSObjectDeletePropertyCallbackEx deletePropertyEx;
-			public JSObjectGetPropertyNamesCallbackEx getPropertyNamesEx;
-			public JSObjectCallAsFunctionCallbackEx callAsFunctionEx;
-			public JSObjectCallAsConstructorCallbackEx callAsConstructorEx;
-			public JSObjectHasInstanceCallbackEx hasInstanceEx;
-			public JSObjectConvertToTypeCallbackEx convertToTypeEx;
-		
-			public void* privateData;/* version 1000 only */
-		};
-		
-		[CRepr, Union]
 		public struct JSClassDefinition
 		{
-			public JSClassDefinitionVersion0 version0;
-			public JSClassDefinitionVersion1000 version1000;
-		};
+			public int32 version;
+			public JSClassAttributes attributes;
+			public char8* className;
+			public JSClassRef parentClass;
+
+			[CRepr]
+			public struct JSClassDefinitionVersion0
+			{
+				public readonly JSStaticValue* staticValues;
+				public readonly JSStaticFunction* staticFunctions;
+				public JSObjectInitializeCallback initialize;
+				public JSObjectFinalizeCallback finalize;
+				public JSObjectHasPropertyCallback hasProperty;
+				public JSObjectGetPropertyCallback getProperty;
+				public JSObjectSetPropertyCallback setProperty;
+				public JSObjectDeletePropertyCallback deleteProperty;
+				public JSObjectGetPropertyNamesCallback getPropertyNames;
+				public JSObjectCallAsFunctionCallback callAsFunction;
+				public JSObjectCallAsConstructorCallback callAsConstructor;
+				public JSObjectHasInstanceCallback hasInstance;
+				public JSObjectConvertToTypeCallback convertToType;
+			}
+			
+			[CRepr]
+			public struct JSClassDefinitionVersion1000
+			{
+				public readonly JSStaticValueEx* staticValuesEx;
+				public readonly JSStaticFunctionEx* staticFunctionsEx;
+				public JSObjectInitializeCallbackEx initializeEx;
+				public JSObjectFinalizeCallbackEx finalizeEx;
+				public JSObjectHasPropertyCallbackEx hasPropertyEx;
+				public JSObjectGetPropertyCallbackEx getPropertyEx;
+				public JSObjectSetPropertyCallbackEx setPropertyEx;
+				public JSObjectDeletePropertyCallbackEx deletePropertyEx;
+				public JSObjectGetPropertyNamesCallbackEx getPropertyNamesEx;
+				public JSObjectCallAsFunctionCallbackEx callAsFunctionEx;
+				public JSObjectCallAsConstructorCallbackEx callAsConstructorEx;
+				public JSObjectHasInstanceCallbackEx hasInstanceEx;
+				public JSObjectConvertToTypeCallbackEx convertToTypeEx;
+			}
+
+			
+			[CRepr, Union]
+			public struct Union
+			{
+				using public JSClassDefinitionVersion0 Version0;
+				using public JSClassDefinitionVersion1000 Version1000;
+			}
+
+			using public Union Union;
+
+			public void* privateData;
+		}
 		
 		/*!
 		@const kJSClassDefinitionEmpty
